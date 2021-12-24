@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
-
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 
 class HttpManager {
@@ -24,11 +22,10 @@ class HttpManager {
 
   Dio dio = Dio();
 
-  DioManager() {
-    dio.options.baseUrl = "https://cadfen-test.ym.net";
+  HttpManager() {
+    dio.options.baseUrl = "https://www.wanandroid.com";
     dio.options.connectTimeout = 5000;
     dio.options.receiveTimeout = 3000;
-
     dio.interceptors.add(LogInterceptor(responseBody: true)); //是否开启请求日志
     dio.interceptors.add(CookieManager(CookieJar())); //缓存相关类
 
@@ -49,7 +46,6 @@ class HttpManager {
   _requestHttp(String url, Function successCallBack,
       [method, params, errorCallBack]) async {
     late Response response;
-    url=_baseUrl+url;
     if (method == 'get') {
       if (params != null && params.length > 0) {
         response = await dio.get(url, queryParameters: params);

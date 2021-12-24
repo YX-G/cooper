@@ -21,12 +21,9 @@ class MyHomePageState extends State<HomePageState>{
 
   @override
   void initState() {
-    Provider.of<ThemeNotifier>(context, listen: false).changeValue(AppThemes.DARK);
-
     _list
       ..add(const HomePage())
       ..add(const MePage());
-
     super.initState();
 
   }

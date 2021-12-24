@@ -29,6 +29,8 @@ dependencies:
   dio_cookie_manager: 2.0.0
   cupertino_icons: ^1.0.2
   provider: ^5.0.0
+  flutter_easyloading: ^3.0.3
+  json_annotation: ^4.4.0
   architecture_theme:
     git: https://github.com/VB10/architecture_theme.git
 dev_dependencies:

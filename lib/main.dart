@@ -1,8 +1,10 @@
-import 'dart:ffi';
+import 'dart:io';
 
 import 'package:cooper/view/theme_notifer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'base/app_init_provider.dart';
 import 'navi/navigation_route.dart';
 import 'navi/navigation_service.dart';
@@ -16,6 +18,11 @@ Future<void> main() async {
     providers: [...ApplicationProvider.instance.dependItems],
     child: const MyApp(),
   ));
+  if(Platform.isAndroid){//沉浸式状态栏
+    //写在组件渲染之后，是为了在渲染后进行设置赋值，覆盖状态栏，写在渲染之前对MaterialApp组件会覆盖这个值。
+    SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+  }
 }
 //初始化
 Future<void> _init() async {}
@@ -23,13 +30,13 @@ Future<void> _init() async {}
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: context.watch<ThemeNotifier>().currentTheme,
       onGenerateRoute: NavigationRoute.instance.generateRoute,
       navigatorKey: NavigationService.instance.navigatorKey,
+      builder: EasyLoading.init()
     );
   }
 }
