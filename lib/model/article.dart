@@ -38,6 +38,7 @@ class Article {
    String? title;
    String? niceDate;
    String? superChapterName;
+   String? envelopePic;
    String? link;
    List<Tag>? tags;
 
@@ -47,6 +48,7 @@ class Article {
       this.title,
       this.niceDate,
       this.superChapterName,
+      this.envelopePic,
       this.link,
       this.tags});
 
@@ -56,6 +58,7 @@ class Article {
         chapterName: parsedJson['chapterName'],
         title: parsedJson['title'],
         niceDate: parsedJson['niceDate'],
+        envelopePic: parsedJson['envelopePic'],
         superChapterName: parsedJson['superChapterName'],
         link: parsedJson['link'],
       tags: (parsedJson['tags'] as List)

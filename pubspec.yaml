@@ -31,6 +31,8 @@ dependencies:
   provider: ^5.0.0
   flutter_easyloading: ^3.0.3
   json_annotation: ^4.4.0
+  fluttertoast: ^8.0.0
+
   architecture_theme:
     git: https://github.com/VB10/architecture_theme.git
 dev_dependencies:
