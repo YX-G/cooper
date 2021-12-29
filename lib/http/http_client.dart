@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 
 class HttpManager {
-  static String _baseUrl = "http://mtest.happyeasygo.com";
   static const CONTENT_TYPE_JSON = "application/json";
   static const CONTENT_TYPE_FORM = "application/x-www-form-urlencoded";
   static Map optionParams = {
@@ -12,6 +11,8 @@ class HttpManager {
     "token": null,
     "authorizationCode": null,
   };
+
+
 
   static late HttpManager _instance;
 
@@ -24,11 +25,11 @@ class HttpManager {
 
   HttpManager() {
     dio.options.baseUrl = "https://www.wanandroid.com";
+    dio.options.headers= {"Access-Control-Allow-Origin", "*"} as Map<String, dynamic>?;
     dio.options.connectTimeout = 5000;
     dio.options.receiveTimeout = 3000;
     dio.interceptors.add(LogInterceptor(responseBody: true)); //是否开启请求日志
     dio.interceptors.add(CookieManager(CookieJar())); //缓存相关类
-
   }
 
   //get请求

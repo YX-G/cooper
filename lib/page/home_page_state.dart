@@ -42,6 +42,7 @@ class MyHomePageState extends State<HomePageState>{
   BottomNavigationBar _bottomNavigationBar(){
     return BottomNavigationBar(
       items: _items(),
+      backgroundColor: Colors.cyan,
       type: BottomNavigationBarType.shifting,
       currentIndex: _currentIndex,
       onTap: (int index) {

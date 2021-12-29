@@ -1,4 +1,6 @@
 import 'package:cooper/content/navigation_constants.dart';
+import 'package:cooper/model/route_values.dart';
+import 'package:cooper/page/article_details_page.dart';
 import 'package:cooper/page/home_page_state.dart';
 import 'package:cooper/page/splash_page.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,11 @@ class NavigationRoute {
         return normalNavigate(const SplashPage(),NavigationConstants.DEFAULT);
       case NavigationConstants.HOME:
          return normalNavigate(const HomePageState(),NavigationConstants.HOME);
+      case NavigationConstants.ARTICLEDETAILPAGE:
+        if (args.arguments is RouteValue) {
+          return normalNavigate(ArticleDetailPage(value: args.arguments as RouteValue,),NavigationConstants.ARTICLEDETAILPAGE);
+        }
+        throw Exception(args.arguments);
     }
     throw Exception(args.arguments);
 

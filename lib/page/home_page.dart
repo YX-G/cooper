@@ -1,18 +1,12 @@
-import 'dart:collection';
-
 import 'package:cooper/http/api.dart';
 import 'package:cooper/model/article.dart';
 import 'package:cooper/model/model_article_list_entity.dart';
+import 'package:cooper/view/adapter/home_page_listview.dart';
 import 'package:cooper/view/loading_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:cooper/http/http_client.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-
-import 'adapter/home_page_listview.dart';
-
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -25,29 +19,43 @@ List<ArticleListData>? aListData = [];
 List<Article> _networkResult = [];
 
 class _HomeState extends State<HomePage> {
+  final ScrollController? _scrollController = ScrollController();
+  int page = 0;
+  bool addFlag = true;
+
   @override
   void initState() {
     super.initState();
     showList(0);
+    _scrollController!.addListener(() {
+      if (_scrollController!.position.pixels >
+          _scrollController!.position.maxScrollExtent - 20) {
+        setState(() {
+          addFlag = false;
+          showList(page + 1, isAdd: true);
+        });
+      }
+    });
   }
 
-  showList(int page) {
-    _networkResult.clear();
+  showList(int page, {bool isAdd = false}) {
     var params = {};
-    HttpManager.getInstance().get(Api.articlePage(0), params,
+    HttpManager.getInstance().get(Api.articlePage(page), params,
         //正常回调
         (data) {
       setState(() {
-        _networkResult = ArticleBean.from(data["data"]).datas!;
-        Fluttertoast.showToast(
-            msg: "加载完成",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0
-        );
+        if (isAdd && addFlag) {
+          LoadingUtils.show();
+          _networkResult.addAll(ArticleBean.from(data["data"]).datas!);
+          LoadingUtils.showToast("加载完成");
+          addFlag = false;
+          Future.delayed(const Duration(milliseconds: 3))
+              .then((value) => {LoadingUtils.dismiss()});
+        } else {
+          _networkResult.clear();
+          _networkResult = ArticleBean.from(data["data"]).datas!;
+          LoadingUtils.showToast("刷新完成");
+        }
       });
     }, (error) {
       print("网络异常，请稍后重试 $error");
@@ -67,18 +75,23 @@ class _HomeState extends State<HomePage> {
   }
 
   Widget _body() {
-    return RefreshIndicator(
-      //圆圈进度颜色
-      color: Colors.blue,
-      //下拉停止的距离
-      displacement: 40.0,
-      //背景颜色
-      backgroundColor: Colors.grey[200],
-      onRefresh: () async {
-        await showList(0);
-        return Future.value(true);
-      },
-      child: HomePageArticleAdapter(articleList: _networkResult),
+    return Scaffold(body:
+      RefreshIndicator(
+        //圆圈进度颜色
+        color: Colors.blue,
+        //下拉停止的距离
+        displacement: 30.0,
+        //背景颜色
+        backgroundColor: Colors.grey[200],
+        onRefresh: () async {
+          await showList(0);
+          return Future.value();
+        },
+        child: HomePageArticleAdapter(
+          articleList: _networkResult,
+          mController: _scrollController,
+        ),
+      ),
     );
   }
 }
