@@ -11,9 +11,6 @@ class HttpManager {
     "token": null,
     "authorizationCode": null,
   };
-
-
-
   static late HttpManager _instance;
 
   static HttpManager getInstance() {
@@ -22,10 +19,9 @@ class HttpManager {
   }
 
   Dio dio = Dio();
-
   HttpManager() {
     dio.options.baseUrl = "https://www.wanandroid.com";
-    dio.options.headers= {"Access-Control-Allow-Origin", "*"} as Map<String, dynamic>?;
+    // dio.options.headers= {"Access-Control-Allow-Origin", "*"};
     dio.options.connectTimeout = 5000;
     dio.options.receiveTimeout = 3000;
     dio.interceptors.add(LogInterceptor(responseBody: true)); //是否开启请求日志

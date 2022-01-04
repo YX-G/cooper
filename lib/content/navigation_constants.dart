@@ -5,5 +5,6 @@ class NavigationConstants {
   static const DEFAULT = '/';
   static const HOME = '/home';
   static const ARTICLEDETAILPAGE = '/articledetailpage';
+  static const LOGIN = '/login';
 
 }

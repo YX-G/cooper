@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:cooper/http/http_client.dart';
+import 'package:cooper/utils/adapt_screen.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -75,8 +77,55 @@ class _HomeState extends State<HomePage> {
   }
 
   Widget _body() {
-    return Scaffold(body:
-      RefreshIndicator(
+    var _controller = TextEditingController();
+    return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 60,
+        backgroundColor: Colors.cyan,
+        title: Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: TextField(
+                  textInputAction: TextInputAction.search,
+                  cursorColor: Colors.deepOrangeAccent,
+                  maxLines: 1,
+                  controller: _controller,
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.search),
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          _controller.clear();
+                        },
+                        icon: const Icon(
+                          Icons.clear,
+                        )),
+                    focusColor: Colors.grey,
+                    filled: true,
+                    enabledBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(30),
+                      ),
+                      borderSide: BorderSide(
+                        color: Colors.black54,
+                        width: 0,
+                      ),
+                    ),
+                    focusedBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(30),
+                        ),
+                        borderSide: BorderSide(
+                          color: Colors.amber,
+                          width: 1, //宽度为5
+                        )),
+                  )),
+              ),)
+          ],
+        ),
+      ),
+      body: RefreshIndicator(
         //圆圈进度颜色
         color: Colors.blue,
         //下拉停止的距离
@@ -93,5 +142,8 @@ class _HomeState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  void onPressed() {
   }
 }

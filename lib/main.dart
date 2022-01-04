@@ -18,11 +18,13 @@ Future<void> main() async {
     providers: [...ApplicationProvider.instance.dependItems],
     child: const MyApp(),
   ));
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
   if(Platform.isAndroid){//沉浸式状态栏
     //写在组件渲染之后，是为了在渲染后进行设置赋值，覆盖状态栏，写在渲染之前对MaterialApp组件会覆盖这个值。
-    SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+    SystemUiOverlayStyle systemUiOverlayStyle = const SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
+
 }
 //初始化
 Future<void> _init() async {}
