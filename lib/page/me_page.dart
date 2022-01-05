@@ -26,20 +26,35 @@ class _MeState extends State<MePage> {
 
   @override
   Widget build(BuildContext context) {
+    ScrollController scrollController=ScrollController();
+    scrollController.addListener(() {
+      // if(scrollController.offset<100){
+      //   scrollController.animateTo(100.0, duration: const Duration(milliseconds: 1000),curve: Curves.ease);
+      // }
+    });
     return Scaffold(
       body: CustomScrollView(
+        controller: scrollController,
+        // physics: const NeverScrollableScrollPhysics(),
         physics: const BouncingScrollPhysics(),
         slivers: <Widget>[
           SliverAppBar(
             flexibleSpace: FlexibleSpaceBar(
               title: TextButton(onPressed:(){
                 NavigationService.instance.navigateToPage(path:NavigationConstants.LOGIN);
-              } ,child: const Text("注册/登录" ,style: TextStyle(color: Colors.white,fontSize:15),),),
+              } ,child: const Text("注册/登录" ,style: TextStyle(color: Colors.white,fontSize:15),),
+              style:  ButtonStyle(backgroundColor: MaterialStateProperty.resolveWith((states) {
+                if (states.contains(MaterialState.pressed)) {
+                    return Colors.black87;
+               }
+                  return Colors.black12;
+               }),
+                 ),),
               centerTitle: true,
               background: Image.asset('images/test.jpg' ,fit: BoxFit.fill,),
               collapseMode: CollapseMode.pin,
             ),
-            expandedHeight: 230.0,
+            expandedHeight: 150.0,
             backgroundColor: Colors.cyan,
             floating: true,
             pinned: true,
@@ -54,18 +69,21 @@ class _MeState extends State<MePage> {
               ),
             ],
           ),
-         SliverFixedExtentList(
+         SliverList(
             delegate: SliverChildBuilderDelegate(
                   (context, index) => ListTile(
                   leading:_itemList.keys.elementAt(index),
+                  enabled: false,
+
                   title: Text(_itemList.values.elementAt(index)),
               ),
               childCount: _itemList.length,
-            ), itemExtent: 50,
+            ),
           ),
           const SliverFillRemaining(),
         ],
       ),
+
     );
   }
 }
