@@ -19,8 +19,6 @@ class _ArticlePage extends State<ArticleDetailPage> {
   @override
   void initState() {
     super.initState();
-
-
   }
   @override
   Widget build(BuildContext context) {
@@ -33,7 +31,7 @@ class _ArticlePage extends State<ArticleDetailPage> {
           ),
         ),
         body: WebView(
-
+          allowsInlineMediaPlayback: true,
           initialUrl: mValue!.url ?? "",
           javascriptMode: JavascriptMode.unrestricted,
         )

@@ -1,3 +1,4 @@
+import 'package:cooper/model/user.dart';
 import 'package:cooper/navi/navigation_service.dart';
 import 'package:cooper/view/theme_notifer.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -15,6 +16,7 @@ class ApplicationProvider{
 
   List<SingleChildWidget> dependItems = [
     ChangeNotifierProvider(create: (context) => ThemeNotifier(),),
+    ChangeNotifierProvider<User>(create: (context) => User(),),
     Provider.value(value: NavigationService.instance),
   ];
 }
