@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cooper/utils/sp_utils.dart';
 import 'package:cooper/view/theme_notifer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,22 +13,24 @@ import 'package:provider/provider.dart';
 
 //main入口
 Future<void> main() async {
-  await _init();
   runApp(MultiProvider(
     // 初始化
     providers: [...ApplicationProvider.instance.dependItems],
     child: const MyApp(),
   ));
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
-  if(Platform.isAndroid){//沉浸式状态栏
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+    if(Platform.isAndroid){//沉浸式状态栏
     //写在组件渲染之后，是为了在渲染后进行设置赋值，覆盖状态栏，写在渲染之前对MaterialApp组件会覆盖这个值。
     SystemUiOverlayStyle systemUiOverlayStyle = const SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
 
+  await _init();
 }
 //初始化
-Future<void> _init() async {}
+Future<void> _init() async {
+  await SpUtils.getInstance();
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

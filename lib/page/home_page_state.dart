@@ -78,5 +78,3 @@ class MyHomePageState extends State<HomePageState> {
     );
   }
 }
-
-mixin _search {}

@@ -34,7 +34,7 @@ class User with ChangeNotifier {
   bool checkUser() {
     var params = {
     };
-    if (SpUtils.get(SpUtils.KEY_ACCOUNT) != 0) {
+    if (SpUtils.getIntValue(SpUtils.KEY_ACCOUNT) != 0) {
       HttpManager.getInstance().get(Api.USERDATA, params,
           //正常回调
           (data) {

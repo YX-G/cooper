@@ -34,7 +34,9 @@ dependencies:
   fluttertoast: ^8.0.0
   webview_flutter: ^3.0.0
   shared_preferences: ^2.0.0
-  path_provider: ^2.0.8
+  path_provider: ^2.0.0
+  permission_handler: ^8.3.0
+  synchronized: ^3.0.0
   architecture_theme:
     git: https://github.com/VB10/architecture_theme.git
 dev_dependencies:

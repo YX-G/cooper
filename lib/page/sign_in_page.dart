@@ -18,15 +18,16 @@ class SignInPage extends StatelessWidget {
         body: Center(child: Column(
           children: [
             Padding(padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-              child: EditText("请输入用户名", _controllerUserName,TextInputType.text),),
+              child: EditText("请输入用户名", _controllerUserName,false),),
             Padding(padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-              child: EditText("请输入密码", _controllerPwd,TextInputType.visiblePassword),),
+              child: EditText("请输入密码", _controllerPwd,true),),
             Visibility(visible: isReg, child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-              child: EditText("请再次输入密码", _controllerRePwd,TextInputType.visiblePassword),)),
+              child: EditText("请再次输入密码", _controllerRePwd,true),)),
             Padding(padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
               child: MaterialButton(
                 minWidth: 100,
+                textColor:Colors.white,
                 color: Colors.cyan,
                 child: Text(isReg ? "注册" : "登录"),
                 onPressed: () {
@@ -41,21 +42,21 @@ class SignInPage extends StatelessWidget {
     );
   }
 
-  Widget EditText(String hint, TextEditingController _controller,TextInputType type) {
+  Widget EditText(String hint, TextEditingController _controller,bool needHid) {
     return TextField(
+        obscureText:needHid ,
         textInputAction: TextInputAction.search,
         cursorColor: Colors.deepOrangeAccent,
         maxLines: 1,
-        keyboardType: type,
         controller: _controller,
         decoration: InputDecoration(
           hintText: hint,
-          prefixIcon: const Icon(Icons.search),
+          prefixIcon: Icon(needHid?Icons.lock:Icons.search),
           suffixIcon: IconButton(
               onPressed: () {
                 _controller.clear();
               },
-              icon: const Icon(
+              icon: Icon(
                 Icons.clear,
               )),
           focusColor: Colors.grey,

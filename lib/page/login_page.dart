@@ -1,13 +1,10 @@
 import 'package:cooper/http/api.dart';
-import 'package:cooper/http/http_client.dart';
-import 'package:cooper/model/user.dart';
 import 'package:cooper/page/sign_in_page.dart';
-import 'package:cooper/utils/sp_utils.dart';
-import 'package:cooper/view/loading_utils.dart';
+import 'package:cooper/presenter/login_presenter.dart';
+import 'package:cooper/utils/adapt_screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -17,12 +14,13 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, LoginPresenter {
   List<Widget> _tabList = [];
   List<Widget> _pageList = [];
   late TabController _tabController;
   bool isReg = false;
   var id = 0;
+
   @override
   void initState() {
     super.initState();
@@ -57,11 +55,18 @@ class _LoginPageState extends State<LoginPage>
           onTap: (int index) {},
         ),
       ),
-      body: SafeArea(
-          child: TabBarView(
-        children: _pageList,
-        controller: _tabController,
-      )),
+      body: Column(
+         children: [SizedBox(
+             height: 150,
+             child:Center(child: Text(
+               "Welcome to Cooper",
+               style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
+             ),)),
+           SizedBox(height:screenAdapt.screenH()/2,child: TabBarView(
+             children: _pageList,
+             controller: _tabController,
+           ),)],
+      ),
     );
   }
 
@@ -72,18 +77,10 @@ class _LoginPageState extends State<LoginPage>
     });
 
     if (!isReg) {
-      HttpManager.getInstance().post(Api.LOGIN, formData,
-        (data) {
-        setState(() {
-          id = User.from(data["data"]).id!;
-          if (id!=0) {
-            SpUtils.save(SpUtils.KEY_ACCOUNT, id);
-            Navigator.of(context).pop();
-          }
-        });
-      }, (error) {
-        print("网络异常，请稍后重试 $error");
-      });
+      LoginOrReg(context, formData, Api.LOGIN);
+    } else {
+      formData.fields.add(MapEntry("repassword", repassword!));
+      LoginOrReg(context, formData, Api.REGISTER);
     }
   }
 }
