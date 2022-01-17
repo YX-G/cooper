@@ -1,5 +1,3 @@
-
-
 import 'package:cooper/http/api.dart';
 import 'package:cooper/http/http_client.dart';
 import 'package:cooper/model/user.dart';

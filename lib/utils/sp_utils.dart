@@ -4,6 +4,11 @@ import 'package:synchronized/synchronized.dart';
 
 class SpUtils{
   static const String KEY_ACCOUNT = "account";
+  static const String KET_HEADER = "head_pic";
+
+
+
+
   static SpUtils? _singleton;
   static SharedPreferences? _prefs;
   static Lock _lock = Lock();
@@ -28,7 +33,7 @@ class SpUtils{
     _prefs = await SharedPreferences.getInstance();
   }
 
-  //例举的String型存储及获取
+
   static int? getIntValue(String key) {
     if (_prefs == null) return null;
     var status = _prefs?.getInt(key);
@@ -40,5 +45,18 @@ class SpUtils{
     if (_prefs == null) return null;
     return _prefs?.setInt(key, value);
   }
+
+  static Future<bool>? putString(String key,String value){
+    if (_prefs == null) return null;
+    return _prefs?.setString(key, value);
+  }
+
+  static String? getStringValue(String key) {
+    if (_prefs == null) return null;
+    var status = _prefs?.getString(key);
+    if (status == null) return "";
+    return status;
+  }
+
 }
 

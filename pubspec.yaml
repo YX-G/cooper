@@ -23,20 +23,33 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+# 网络框架
   dio: ^4.0.1
+#  cookie框架
   cookie_jar: ^3.0.0
   dio_cookie_manager: 2.0.0
+#  icon库
   cupertino_icons: ^1.0.2
+#  观察者库
   provider: ^5.0.0
+#  加载库
   flutter_easyloading: ^3.0.3
+#  json数据转换
   json_annotation: ^4.4.0
+#  toast
   fluttertoast: ^8.0.0
+#  webview
   webview_flutter: ^3.0.0
+#  sp
   shared_preferences: ^2.0.0
+#  文件处理
   path_provider: ^2.0.0
+#  权限申请
   permission_handler: ^8.3.0
+#  同步
   synchronized: ^3.0.0
+#  图片选取
+  image_picker: ^0.8.4+4
   architecture_theme:
     git: https://github.com/VB10/architecture_theme.git
 dev_dependencies:

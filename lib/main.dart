@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:cooper/utils/sp_utils.dart';
@@ -13,6 +14,10 @@ import 'package:provider/provider.dart';
 
 //main入口
 Future<void> main() async {
+  // 转发至 Zone 的错误回调
+  FlutterError.onError = (FlutterErrorDetails details) async {
+    Zone.current.handleUncaughtError(details.exception, details.stack!);
+  };
   runApp(MultiProvider(
     // 初始化
     providers: [...ApplicationProvider.instance.dependItems],
@@ -26,10 +31,12 @@ Future<void> main() async {
   }
 
   await _init();
+
 }
 //初始化
 Future<void> _init() async {
   await SpUtils.getInstance();
+
 }
 
 class MyApp extends StatelessWidget {

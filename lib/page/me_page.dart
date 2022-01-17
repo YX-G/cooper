@@ -1,8 +1,12 @@
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:cooper/content/navigation_constants.dart';
 import 'package:cooper/navi/navigation_service.dart';
 import 'package:cooper/utils/sp_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 
 class MePage extends StatefulWidget {
   const MePage({Key? key}) : super(key: key);
@@ -18,14 +22,29 @@ class _MeState extends State<MePage> with WidgetsBindingObserver {
     const Icon(Icons.http_sharp): "我的发布",
     const Icon(Icons.assistant_photo): "收藏",
     const Icon(Icons.hourglass_bottom_rounded): "关于",
+    const Icon(Icons.logout): "退出登录",
   };
+  var _imagePath = File("");
+
+  var _path = "";
+
+  bool hasPath = false;
 
   @override
   void initState() {
     super.initState();
+
     print("AA====initState");
+
     checkLogin();
+
     WidgetsBinding.instance!.addObserver(this);
+
+    _path = SpUtils.getStringValue(SpUtils.KET_HEADER) ?? "";
+
+    hasPath = _path == "" ? false : true;
+
+    _imagePath = File(_path);
   }
 
   void checkLogin() {
@@ -82,10 +101,9 @@ class _MeState extends State<MePage> with WidgetsBindingObserver {
       default:
     }
   }
-
   @override
   void dispose() {
-    print("AA====dispose");
+    print("AA=====dispose");
     WidgetsBinding.instance!.removeObserver(this);
     super.dispose();
   }
@@ -131,11 +149,7 @@ class _MeState extends State<MePage> with WidgetsBindingObserver {
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
-              (context, index) => ListTile(
-                leading: _itemList.keys.elementAt(index),
-                enabled: false,
-                title: Text(_itemList.values.elementAt(index)),
-              ),
+              (context, index) => buildListItem(index),
               childCount: _itemList.length,
             ),
           ),
@@ -143,6 +157,25 @@ class _MeState extends State<MePage> with WidgetsBindingObserver {
         ],
       ),
     );
+  }
+
+  Widget buildListItem(int index) {
+    var isShowing = true;
+    if(index==3){
+      if(isLogin){
+        isShowing=true;
+      }{
+        isShowing=false;
+      }
+    }
+    var item = Visibility(
+        visible: isShowing,
+        child: ListTile(
+          leading: _itemList.keys.elementAt(index),
+          enabled: false,
+          title: Text(_itemList.values.elementAt(index)),
+        ));
+    return item;
   }
 
   TextButton signInBtn() {
@@ -167,10 +200,49 @@ class _MeState extends State<MePage> with WidgetsBindingObserver {
   }
 
   Widget loginView() {
-    return Text(
-      SpUtils.getIntValue(SpUtils.KEY_ACCOUNT).toString(),
-      style: TextStyle(
-          fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+            height: 50,
+            width: 50,
+            child: GestureDetector(
+              onTap: () => {takeImage()},
+              child: ClipOval(
+                child: setDefaultImg(),
+              ),
+            )),
+        Text(
+          SpUtils.getIntValue(SpUtils.KEY_ACCOUNT).toString(),
+          style: TextStyle(
+              fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
+        )
+      ],
     );
+  }
+
+  final ImagePicker _picker = ImagePicker();
+
+  takeImage() async {
+    _path = (await _picker.pickImage(source: ImageSource.gallery))!.path;
+    hasPath = _path == "" ? false : true;
+    setState(() {
+      _imagePath = File(_path);
+      SpUtils.putString(SpUtils.KET_HEADER, _imagePath.path);
+    });
+  }
+
+  Widget setDefaultImg() {
+    Image _img = Image.file(
+      _imagePath,
+      fit: BoxFit.fitWidth,
+      width: 100,
+      height: 100,
+    );
+    var resolve = _img.image.resolve(ImageConfiguration.empty);
+    resolve.addListener(ImageStreamListener((image, synchronousCall) {},
+        onError: (Object exception, StackTrace? stackTrace) {}));
+
+    return hasPath ? _img : Icon(Icons.add_a_photo);
   }
 }

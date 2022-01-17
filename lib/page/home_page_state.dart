@@ -1,5 +1,7 @@
+import 'package:cooper/page/deal_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'home_page.dart';
 import 'me_page.dart';
 
@@ -18,8 +20,9 @@ class MyHomePageState extends State<HomePageState> {
   @override
   void initState() {
     _list
-      ..add(const HomePage())
-      ..add(const MePage());
+      ..add(HomePage())
+      ..add(DealPage())
+      ..add(MePage());
     super.initState();
   }
 
@@ -62,6 +65,10 @@ class MyHomePageState extends State<HomePageState> {
       BottomNavigationBarItem(
         icon: getTabImage('images/tabz.png'),
         label: 'Home',
+      ),
+      BottomNavigationBarItem(
+        icon: getTabImage('images/tabz.png'),
+        label: 'Deal',
       ),
       BottomNavigationBarItem(
         icon: getTabImage('images/tabz.png'),
